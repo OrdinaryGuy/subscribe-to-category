@@ -434,8 +434,8 @@ if( class_exists( 'STC_Subscribe' ) ) {
   		global $wpdb;
   		$data = $this->data;
   		
-  		$result = $wpdb->get_row( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type = %s", $data['email'], 'stc') );
-
+  		$result = $wpdb->get_row( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type = %s", $data['email'], 'stc') );    
+  		
   		if(empty( $result ))
   			return false;
 
@@ -463,19 +463,19 @@ if( class_exists( 'STC_Subscribe' ) ) {
   		$post_id = $this->subscriber_exists();
 
   		$post_data = array(
-  			'ID'            => $post_id,
+	  			'ID' 			=> $post_id,
 				'post_type'     => 'stc',
-			  'post_title'    => $data['email'],
-			  'post_status'   => 'publish',
-			  'post_author'   => 1,
-			  'post_category' => $data['categories']
-			);		
+				'post_title'    => $data['email'],
+				'post_status'   => 'publish',
+				'post_author'   => 1,
+				'post_category' => $data['categories']
+			);	
 
   		// update post if subscriber exist, else insert as new post
   		if(!empty( $post_id )){
-  			$post_id = wp_update_post( $post_data );
+	  		$post_categories = wp_set_post_categories( $post_id, $data['categories'], true );
   		}else{
-  			$post_id = wp_insert_post( $post_data );
+	  		$post_id = wp_insert_post( $post_data );
         update_post_meta( $post_id, '_stc_hash', md5( $data['email'].time() ) );
   		}
 
