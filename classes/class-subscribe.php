@@ -738,6 +738,8 @@ if( class_exists( 'STC_Subscribe' ) ) {
         $cats = $this->filter_categories_in( $cats, $category_in );
       }elseif( !empty( $category_not_in ) ){
         $cats = $this->filter_categories_not_in( $cats, $category_not_in );
+      } elseif ( empty($category_in) AND empty($category_not_in) ) {
+	      $cats = $this->filter_categories_in( $cats, get_the_title() );
       }
 
       // if error store email address in field value so user dont need to add it again
